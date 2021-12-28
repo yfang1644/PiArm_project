@@ -1,0 +1,19 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=2.6.4
+
+PKG_DEPENDS="freetype glib"
+PKG_MAINTAINER="Behdad Esfahbod <behdad@behdad.org>"
+PKG_SECTION="x11/toolkits"
+PKG_SHORTDESC="HarfBuzz is an OpenType text shaping engine."
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS} \
+      LDFLAGS="$LDFLAGS -lpng -lm -Wl,-rpath-link=$INSTALL_PATH/usr/lib" \
+      --without-icu \
+      --without-cairo
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=2.4.6
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Gordon Matzigkeit<gord@gnu.org>, et al"
+PKG_SECTION="devel"
+PKG_SHORTDESC="Generic library support script"
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS}
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

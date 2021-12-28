@@ -1,0 +1,21 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=1.9.1release
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Pete Shinners"
+PKG_SECTION="Python"
+PKG_SHORTDESC="Python games"
+
+buildpkg() {
+  CFLAGS="-I$INSTALL_PATH/usr/include"
+  CPPFLAGS=""
+  PY_CFLAGS=""
+  cd ..
+
+  export CC=aarch64-linux-gcc
+  export LDSHARED="aarch64-linux-ld -shared"
+  python3 setup.py build --prefix=/usr --host=aarch64-linux
+  python3 setup.py install --prefix=usr --root=$INSTALL_PKG
+}

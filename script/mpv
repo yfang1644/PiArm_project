@@ -1,0 +1,36 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=0.33.0
+
+PKG_DEPENDS="ffmpeg mesa libXinerama libXrandr libXScrnSaver libass"
+PKG_MAINTAINER="mpv-team@googlegroups.com"
+PKG_SECTION="multimedia"
+PKG_SHORTDESC="Video player based on MPlayer/mplayer2"
+
+buildpkg() {
+  cd ..
+  export LDFLAGS="$LDFLAGS -Wl,-rpath-link=/home/fang/beaglebone/BeagleBuild/install64/usr/lib -luuid"
+
+    export CC=aarch64-linux-gcc
+
+    ./waf configure \
+      --prefix=/usr \
+      --enable-x11 \
+      --enable-gl-x11 \
+      --enable-gl \
+      --enable-egl \
+      --enable-egl-x11 \
+      --enable-egl-drm \
+      --disable-wayland \
+      --disable-zimg \
+      --disable-pulse \
+      --disable-android \
+      --disable-vdpau \
+      --disable-lcms2 \
+      --disable-sdl2
+
+  ./waf build
+
+  DESTDIR=$INSTALL_PKG ./waf install
+}

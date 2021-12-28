@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=1.0.21
+
+PKG_DEPENDS="systemd"
+PKG_MAINTAINER="Pete Batard <pete@akeo.ie>"
+PKG_SECTION="network"
+PKG_SHORTDESC="OS independent USB device access"
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS}
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

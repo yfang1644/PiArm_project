@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=0.14.0
+
+PKG_DEPENDS="fontconfig fribidi"
+PKG_MAINTAINER="Evgeniy Stepanov <eugeni.stepanov@gmail.com>"
+PKG_SECTION="multimedia"
+PKG_SHORTDESC="A portable subtitle renderer for the ASS/SSA (Advanced Substation Alpha) subtitle format."
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS} \
+      --disable-harfbuzz
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

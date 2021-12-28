@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=1.2.1
+
+PKG_DEPENDS_TARGET="libexif libjpeg-turbo libid3tag libvorbis ffmpeg flac sqlite"
+PKG_MAINTAINER="Justin Maggard <jmaggard@users.sourceforge.net>"
+PKG_SECTION="network"
+PKG_SHORTDESC="The MiniDLNA daemon is an UPnP-A/V and DLNA service which serves multimedia content to compatible clients on the network."
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS} LIBS="-lz"
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

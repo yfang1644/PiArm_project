@@ -1,0 +1,33 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=20.2.0
+
+PKG_DEPENDS="expat libdrm libxshmfence libXxf86vm libXrandr libXdamage"
+PKG_MAINTAINER="Brian Paul (brian@precisioninsight.com)"
+PKG_SECTION="graphics"
+PKG_SHORTDESC="3-D graphics library with OpenGL API"
+
+buildpkg() {
+    cd ..
+    meson build_aarch64 -Dprefix=/usr \
+        -Dllvm=false \
+        -Ddri3=enabled \
+        -Dglx=dri \
+        -Dgles1=disabled \
+        -Dgles2=enabled \
+        -Degl=enabled \
+        -Dplatforms=x11 \
+        -Dgbm=enabled \
+        -Dgallium-drivers=vc4 \
+        -Ddri-drivers=swrast \
+        -Dosmesa=none \
+        -Dselinux=false \
+        -Dshared-glapi=enabled \
+        -Dvulkan-drivers=auto \
+        -Dvalgrind=disabled \
+        --cross-file=/home/fang/beaglebone/BeagleBuild/meson.conf
+
+    ninja -C build_aarch64
+    DESTDIR=$INSTALL_PKG ninja -C build_aarch64 install
+}

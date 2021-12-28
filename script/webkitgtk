@@ -1,0 +1,38 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=2.30.4
+
+PKG_DEPENDS="harfbuzz libwebp libsoup libsecret gtk3 gst-plugins-base libXt libxslt libnotify"
+PKG_MAINTAINER="WebKIT"
+PKG_SECTION="network"
+PKG_SHORTDESC="WebKit is the web browser engine used by Safari, App Store, and many other OS X, iOS, and Linux applications."
+
+buildpkg() {
+  cmake .. \
+      -DCMAKE_SYSTEM_NAME=Linux \
+      -DCMAKE_SYSTEM_PROCESSOR=${TARGET_ARCH}\
+      -DCMAKE_C_COMPILER=${TARGET_PREFIX}gcc \
+      -DCMAKE_CPP_COMPILER=${TARGET_PREFIX}g++ \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+      -DCMAKE_INSTALL_LOCALSTATEDIR=/var \
+      -DLIB_INSTALL_DIR=/usr/lib \
+      -DENABLE_STATIC=OFF \
+      -DENABLE_TOOLS=OFF \
+      -DPORT=GTK \
+      -DENABLE_GEOLOCATION=OFF \
+      -DENABLE_JIT=OFF \
+      -DENABLE_PLUGIN_PROCESS_GTK2=OFF \
+      -DENABLE_INTROSPECTION=OFF \
+      -DENABLE_SUBTLE_CRYPTO=OFF \
+      -DENABLE_MINIBROWSER=ON \
+      -DENABLE_SPELLCHECK=OFF \
+      -DENABLE_GLES2=ON \
+      -DUSE_SYSTEM_MALLOC=ON \
+      -DUSE_LIBHYPHEN=OFF \
+      -DUSE_LD_GOLD=OFF \
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

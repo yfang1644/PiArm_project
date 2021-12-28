@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=0.15.1b
+
+PKG_DEPENDS="zlib"
+PKG_MAINTAINER="Lukas Sabota (LTsmooth42@gmail.com)"
+
+PKG_SECTION="audio"
+PKG_SHORTDESC="library for id3 tagging"
+
+buildpkg() {
+TARGET_CONFIGURE_OPTS=$(echo ${TARGET_CONFIGURE_OPTS}|sed "s/aarch64-/arm-/")
+  ../configure ${TARGET_CONFIGURE_OPTS}
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

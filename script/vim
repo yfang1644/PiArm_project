@@ -1,0 +1,32 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=8.2
+
+PKG_DEPENDS="ncurses gtk+ libSM"
+PKG_MAINTAINER="Bram Moolenaar <Bram@vim.org>"
+PKG_SECTION="tools"
+PKG_SHORTDESC="Vi IMproved"
+
+buildpkg() {
+  cd ..
+  export CC=${TARGET_PREFIX}gcc
+
+  ./configure ${TARGET_CONFIGURE_OPTS} \
+      CFLAGS="-I$INSTALL_PATH/usr/include" \
+      LDFLAGS="$LDFLAGS -Wl,-rpath-link=$INSTALL_PATH/usr/lib -lX11 -luuid" \
+      vim_cv_toupper_broken=yes \
+      vim_cv_terminfo=yes \
+      vim_cv_tgetent=yes \
+      vim_cv_tty_group=world \
+      vim_cv_getcwd_broken=yes \
+      vim_cv_stat_ignores_slash=yes \
+      vim_cv_memmove_handles_overlap=yes \
+      vim_cv_bcopy_handles_overlap=yes \
+      ac_cv_small_wchar_t=2 \
+      --enable-gui=gtk3 \
+      --with-tlib=ncurses
+
+  make  $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

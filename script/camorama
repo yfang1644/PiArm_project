@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=0.20.6
+
+PKG_DEPENDS="gtk+ v4l-utils"
+PKG_MAINTAINER="Greg Jones <greg@fixedgear.org>, Sven Herzberg <herzi@gnome-de.org>"
+PKG_SECTION="apps"
+PKG_SHORTDESC="camorama - view, alter and save images from a webcam"
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS} \
+    LDFLAGS="$LDFLAGS -lpng -luuid -Wl,-rpath-link=$INSTALL_PATH/usr/lib"
+
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

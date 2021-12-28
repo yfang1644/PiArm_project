@@ -1,0 +1,30 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=2.4.102
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Rickard E. (Rik) Faith <faith@valinux.com>"
+PKG_SECTION="graphics"
+PKG_SHORTDESC="Userspace interface to kernel DRM services"
+
+buildpkg() {
+    export LDFLAGS="$LDFLAGS -Wl,-rpath-link=$INSTALL_PATH/usr/lib -luuid"
+    cd ..
+    meson build_aarch64 -Dprefix=/usr \
+        -Dinstall-test-programs=false \
+        -Dexynos=false \
+        -Dfreedreno_kgsl=true \
+        -Damdgpu=false \
+        -Dintel=false \
+        -Dnouveau=false \
+        -Dradeon=false \
+        -Dvc4=true \
+        -Dvmwgfx=true \
+        -Dcairo-tests=false \
+        -Dvalgrind=false \
+        --cross-file /home/fang/beaglebone/BeagleBuild/meson.conf
+
+    ninja -C build_aarch64
+    DESTDIR=$INSTALL_PKG ninja -C build_aarch64 install
+}

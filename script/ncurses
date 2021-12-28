@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=6.1
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Keith Bostic"
+PKG_SECTION="devel"
+PKG_SHORTDESC="The ncurses (new curses) library"
+
+buildpkg() {
+  ../configure $TARGET_CONFIGURE_OPTS \
+    --without-normal \
+    --without-debug \
+    --with-shared \
+    --without-progs
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}
+
+# ncurses-6.2 xterm-16color 编译出错, 修改 misc/terminfo.tmp 文件!

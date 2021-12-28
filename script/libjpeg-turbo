@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=2.0.3
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Independent JPEG Group"
+PKG_SECTION="graphics"
+PKG_SHORTDESC="A high-speed version of libjpeg for x86 and x86-64 processors which uses SIMD instructions (MMX, SSE2, etc.) to accelerate baseline JPEG compression and decompression."
+
+buildpkg() {
+  cmake .. \
+    -DCMAKE_SYSTEM_NAME=Linux \
+    -DCMAKE_SYSTEM_PROCESSOR=${TARGET_ARCH} \
+    -DCMAKE_C_COMPILER=${TARGET_PREFIX}gcc \
+    -DCMAKE_CXX_COMPILER=${TARGET_PREFIX}g++ \
+    -DCMAKE_CPP_COMPILER=${TARGET_PREFIX}cpp \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DWITH_SIMD=ON \
+    -DENABLE_STATIC=OFF
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

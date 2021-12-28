@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=0.6.21
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="utz Mueller <urc8@rz.uni-karlsruhe.de>, et al"
+
+PKG_SECTION="devel"
+PKG_SHORTDESC="A library to parse an EXIF file and read the data from those tags"
+
+buildpkg() {
+TARGET_CONFIGURE_OPTS=$(echo ${TARGET_CONFIGURE_OPTS}|sed "s/aarch64-/arm-/")
+  ../configure ${TARGET_CONFIGURE_OPTS}
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

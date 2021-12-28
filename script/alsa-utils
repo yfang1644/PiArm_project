@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=1.2.3
+
+PKG_DEPENDS="alsa-lib ncurses"
+PKG_MAINTAINER="Jaroslav Kysela <perex@perex.cz>"
+PKG_SECTION="audio"
+PKG_SHORTDESC="Advanced Linux Sound Architecture utilities"
+
+buildpkg() {
+  ../configure ${TARGET_CONFIGURE_OPTS} \
+      --disable-xmlto \
+      --disable-alsaconf \
+      --disable-alsaloop \
+      --enable-alsatest \
+      --disable-bat \
+      --with-curses=ncurses \
+      NCURSES_CFLAGS="-I$INSTALL_PATH/usr/include" \
+      NCURSES_LIBS="-lncurses"
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}

@@ -1,0 +1,109 @@
+#!/bin/bash
+
+PKG_NAME=$1
+PKG_VERSION=4.2.3
+
+PKG_DEPENDS=""
+PKG_MAINTAINER="Michael Niedermayer, et al."
+PKG_SECTION="multimedia"
+PKG_SHORTDESC="Fmpeg is a complete, cross-platform solution to record, convert and stream audio and video."
+
+buildpkg() {
+  cd ..
+  autoreconf -ivf
+  ./configure \
+    --prefix="/usr" \
+    --arch="$TARGET_ARCH" \
+    --enable-cross-compile \
+    --cross-prefix="$TARGET_PREFIX" \
+    --target-os="linux" \
+    --nm="${TARGET_PREFIX}nm" \
+    --ar="${TARGET_PREFIX}ar" \
+    --strip="${TARGET_PREFIX}strip" \
+    --cc="${TARGET_PREFIX}gcc" \
+    --cxx="${TARGET_PREFIX}g++" \
+    --ranlib="${TARGET_PREFIX}ranlib" \
+    --ld="${TARGET_PREFIX}gcc" \
+    --host-cc=gcc \
+    --extra-cflags="$CFLAGS" \
+    --extra-ldflags="$LDFLAGS" \
+    --disable-static \
+    --enable-shared \
+    --enable-gpl \
+    --disable-version3 \
+    --enable-nonfree \
+    --enable-logging \
+    --disable-doc \
+    --enable-pic \
+    --enable-optimizations \
+    --disable-extra-warnings \
+    --disable-programs \
+    --enable-avdevice \
+    --enable-avcodec \
+    --enable-avformat \
+    --enable-swscale \
+    --enable-postproc \
+    --enable-avfilter \
+    --disable-devices \
+    --enable-pthreads \
+    --enable-network \
+    --enable-openssl \
+    --disable-gray \
+    --enable-swscale-alpha \
+    --disable-small \
+    --enable-dct \
+    --enable-fft \
+    --enable-mdct \
+    --enable-rdft \
+    --disable-crystalhd \
+    --enable-runtime-cpudetect \
+    --disable-hardcoded-tables \
+    --disable-encoders \
+    --enable-encoder=ac3 \
+    --enable-encoder=aac \
+    --enable-encoder=wmav2 \
+    --enable-encoder=mjpeg \
+    --enable-encoder=png \
+    --enable-hwaccels \
+    --disable-muxers \
+    --enable-muxer=spdif \
+    --enable-muxer=adts \
+    --enable-muxer=asf \
+    --enable-muxer=ipod \
+    --enable-muxer=mpegts \
+    --enable-demuxers \
+    --enable-parsers \
+    --enable-bsfs \
+    --enable-protocol=http \
+    --disable-indevs \
+    --disable-outdevs \
+    --enable-filters \
+    --disable-avisynth \
+    --enable-bzlib \
+    --disable-lzma \
+    --disable-alsa \
+    --disable-frei0r \
+    --disable-libopencore-amrnb \
+    --disable-libopencore-amrwb \
+    --disable-libopencv \
+    --disable-libdc1394 \
+    --disable-libfreetype \
+    --disable-libgsm \
+    --disable-libmp3lame \
+    --disable-libopenjpeg \
+    --disable-librtmp \
+    --disable-libspeex \
+    --disable-libtheora \
+    --disable-libvo-amrwbenc \
+    --disable-libvorbis \
+    --disable-libvpx \
+    --disable-libx264 \
+    --disable-libxavs \
+    --disable-libxvid \
+    --enable-zlib \
+    --disable-altivec \
+    --disable-symver
+
+  make $MAKEFLAGS
+  make DESTDIR=$INSTALL_PKG install
+}
